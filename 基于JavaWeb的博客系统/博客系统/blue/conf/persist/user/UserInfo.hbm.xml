@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="persist.user">
+    <class name="UserInfo" table="tb_userinfo">
+        <id name="id" type="integer" access="field">
+            <column name="id" />
+            <generator class="increment"/>
+        </id>
+        
+        <one-to-one name="login" class="Login" cascade="all"/>
+        
+        <property name="realName" type="string">
+            <column name="real_name" length="20" />
+        </property>
+        <property name="sex" type="boolean">
+            <column name="sex" />
+        </property>
+        <property name="birthday" type="string">
+            <column name="birthday" length="10" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="30" />
+        </property>
+        <property name="birthPlace" type="string">
+            <column name="birth_place" length="20" />
+        </property>
+        <property name="livePlace" type="string">
+            <column name="live_place" length="20" />
+        </property>
+        <property name="registTime" type="string">
+            <column name="regist_time" length="19" />
+        </property>
+        <property name="lastLoginTime" type="string">
+            <column name="last_login_time" length="19" />
+        </property>
+        <property name="introduce" type="string">
+            <column name="introduce" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>

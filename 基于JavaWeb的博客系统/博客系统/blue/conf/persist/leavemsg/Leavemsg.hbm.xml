@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="persist.leavemsg">
+    <class name="Leavemsg" table="tb_leave_msg">
+        <id name="id" type="integer" access="field">
+            <column name="id" />
+            <generator class="increment"/>
+        </id>
+        <property name="comName" type="string">
+            <column name="com_name" length="20" />
+        </property>
+        <property name="comContent" type="string">
+            <column name="com_content" length="1000" />
+        </property>
+        <property name="comTime" type="string">
+            <column name="com_time" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

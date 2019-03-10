@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="persist.article">
+    <class name="ArticleComment" table="tb_articel_comment">
+        <id name="id" type="integer" access="field">
+            <column name="id" />
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="article" class="Article" fetch="select">
+            <column name="a_id" not-null="true" />
+        </many-to-one>
+        <property name="user" type="string">
+            <column name="a_user" length="30" />
+        </property>
+        <property name="comment" type="string">
+            <column name="a_comment" length="1000" />
+        </property>
+         <property name="time" type="string">
+            <column name="a_time" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

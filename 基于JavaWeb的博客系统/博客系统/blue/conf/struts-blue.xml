@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="public" extends="struts-mydefault">
+		<action name="goindex" class="com.action.GoAction">
+			<param name="uid">1</param>
+			<result>/WEB-INF/jsp/main.jsp</result>
+		</action>
+		<action name="go*">
+			<result>/WEB-INF/jsp/{1}.jsp</result>
+		</action>
+	</package>
+	
+	<package name="login_pack" extends="struts-mydefault">
+		<action name="logout" class="com.action.UserAction" method="logout">
+			<result type="redirectAction">goindex</result>
+		</action>
+	</package>
+	<package name="login_ajax_pack" extends="json-default">
+		<action name="login" class="com.action.UserAction" method="login">
+			<result type="json"/>
+		</action>
+	</package>
+	
+	<package name="search" extends="struts-mydefault">
+		<action name="search" class="com.action.SearchAction">
+			<result>/WEB-INF/jsp/searchResult.jsp</result>
+		</action>
+	</package>
+	
+	<package name="article_pack" extends="struts-mydefault">
+		<action name="go_new_article" class="com.action.GoAction" method="articleType">
+			<result>/fckeditor/new_article.jsp</result>
+		</action>
+		<action name="ArticleEdit" class="com.action.AdetailAction" method="aedit">
+			<result>/fckeditor/new_article.jsp</result>
+		</action>
+		
+		<action name="*Article" class="com.action.ArticleAction" method="{1}Article">
+			<result>/fckeditor/new_article.jsp</result>
+			<result name="input">/fckeditor/new_article.jsp</result>
+			<result name="invalid.token">/fckeditor/new_article.jsp</result>
+			<interceptor-ref name="token"/>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+	</package>
+	<package name="article_pack_ajax" extends="json-default">
+		<action name="addNewArticleType" class="com.action.ArticleAction" method="addNewArticleType">
+			<result type="json"/>
+		</action>
+		<action name="showArticleList" class="com.action.ArticleAction" method="showArticleList">
+			<param name="pageSize">10</param>
+			<param name="top">10</param>
+			<result>/WEB-INF/jsp/articleList.jsp</result>
+		</action>
+		<action name="ArticleDetail" class="com.action.AdetailAction" method="adetail">
+			<result>/WEB-INF/jsp/adetail.jsp</result>
+		</action>
+
+		<action name="delArticle" class="com.action.AdetailAction" method="adel">
+			<result type="json"/>
+		</action>
+		<action name="delComment" class="com.action.AdetailAction" method="cdel">
+			<result type="json"/>
+		</action>
+		<action name="ArticleComment" class="com.action.AdetailAction" method="acomment">
+			<result type="json"/>
+		</action>
+		<action name="CommentReply" class="com.action.AdetailAction" method="areply">
+			<result type="json"/>
+		</action>
+		<action name="renameArticleType" class="com.action.ArticleAction" method="renameArticleType">
+			<result type="json"/>
+		</action>
+		<action name="delArticleType" class="com.action.ArticleAction" method="delArticleType">
+			<result type="json"/>
+		</action>
+	</package>
+	
+	
+	<package name="album_pack" extends="struts-mydefault">
+		<action name="albumList" class="com.action.GoAction" method="eachImgType">
+			<result>/WEB-INF/jsp/albumList.jsp</result>
+		</action>
+		<action name="imgUpload" class="com.action.GoAction" method="imgUpload">
+			<result>/WEB-INF/jsp/imgUpload.jsp</result>
+		</action>
+		<action name="imgListShow" class="com.action.AlbumAction" method="imgListShow">
+			<param name="pageSize">10</param>
+			<param name="top">5</param>
+			<result>/WEB-INF/jsp/imgListShow.jsp</result>
+		</action>
+		<action name="imgShow" class="com.action.AlbumAction" method="imgShow">
+			<result>/WEB-INF/jsp/imgShow.jsp</result>
+		</action>
+		<action name="uploadImg" class="com.action.UploadImgAction">
+			<param name="compressType">1</param>
+			<param name="savePath">uploadimg</param>
+			<param name="new_width1">135</param>
+			<param name="new_height1">90</param>
+			<param name="new_width2">90</param>
+			<param name="new_height2">135</param>
+			
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/bmp,image/png,image/x-png,image/gif,image/jpeg,image/pjpeg</param>
+				<param name="maximumSize">204800</param>
+			</interceptor-ref>
+			<interceptor-ref name="token"/>
+			<interceptor-ref name="defaultStack"/>
+
+			<result>/WEB-INF/jsp/imgUpload.jsp</result>
+			<result name="input">/WEB-INF/jsp/imgUpload.jsp</result>
+			<result name="invalid.token">/WEB-INF/jsp/imgUpload.jsp</result>
+		</action>
+		
+	</package>
+	<package name="album_pack_ajax" extends="json-default">
+		<action name="alb*" class="com.action.AlbumAjaxAction" method="{1}">
+			<result type="json"/>
+		</action>
+		<action name="imgShowAjax" class="com.action.AlbumAjaxAction" method="showImgAjax">
+			<result type="json"/>
+		</action>
+	</package>
+	
+	<package name="profile_pack" extends="struts-mydefault">
+		<action name="profile" class="com.action.ProfileAction" method="showProfile">
+			<param name="uid">1</param>
+			<param name="type">1</param>
+			<param name="article_top">5</param>
+			<param name="msg_top">3</param>
+			<param name="img_top">6</param>
+			<result>/WEB-INF/jsp/profile.jsp</result>
+		</action>
+		<action name="uploadImg2" class="com.action.UploadImgAction">
+			<param name="compressType">2</param>
+			<param name="savePath">uploadpicshow</param>
+			<param name="new_width1">270</param>
+			<param name="new_height1">178</param>
+			<param name="new_width2">270</param>
+			<param name="new_height2">178</param>
+			
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/bmp,image/png,image/x-png,image/gif,image/jpeg,image/pjpeg</param>
+				<param name="maximumSize">204800</param>
+			</interceptor-ref>
+			<interceptor-ref name="token"/>
+			<interceptor-ref name="defaultStack"/>
+
+			<result>/WEB-INF/jsp/imgUpload.jsp</result>
+			<result name="input">/WEB-INF/jsp/imgUpload.jsp</result>
+			<result name="invalid.token">/WEB-INF/jsp/imgUpload.jsp</result>
+		</action>
+		<action name="leavemsgShow" class="com.action.LeavemsgAction" method="showmsg">
+			<param name="pageSize">15</param>
+			<result>/WEB-INF/jsp/leavemsgShow.jsp</result>
+		</action>
+		<action name="userinfoOp" class="com.action.ProfileAction" method="userinfoOp">
+			<param name="uid">1</param>
+			<result>/WEB-INF/jsp/userinfoOp.jsp</result>
+		</action>
+	</package>
+	<package name="profile_pack_ajax" extends="json-default">
+		<action name="msg*" class="com.action.LeavemsgAction" method="{1}msg">
+			<result type="json"/>
+		</action>
+		<action name="*UserInfo" class="com.action.UserInfoAction" method="{1}UserInfo">
+			<result type="json"/>
+		</action>
+	</package>
+	
+</struts>

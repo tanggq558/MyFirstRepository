@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="persist.article">
+    <class name="ArticleType" table="tb_articel_type">
+        <id name="id" type="integer" access="field">
+            <column name="id" />
+            <generator class="increment"/>
+        </id>
+        <property name="typeName" type="string">
+            <column name="type_name" length="20" />
+        </property>
+         <property name="typeDesc" type="string">
+            <column name="type_desc" length="20" />
+        </property>
+        <set name="articles" inverse="true" cascade="delete">
+            <key>
+                <column name="t_id" not-null="true" />
+            </key>
+            <one-to-many class="Article" />
+        </set>
+    </class>
+</hibernate-mapping>

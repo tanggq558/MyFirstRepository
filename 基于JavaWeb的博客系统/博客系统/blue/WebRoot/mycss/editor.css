@@ -1,0 +1,16 @@
+.maininput{
+	padding:20px 40px;
+}
+.maininput label{font-size:14px;font-weight:blod;}
+
+.maininput form{margin:15px 0;}
+
+.maininput form .tips{color:red;padding-left:30px;}
+
+.maininput form .tit,.maininput form .con,.maininput form .cat,.maininput form .sub{padding:15px 0;}
+
+.maininput form .cat select{width:140px;height:20px;}
+
+.error,.errorMessage{color:red;}
+.error{padding-left:32px;}
+

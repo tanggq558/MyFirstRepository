@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<property name="location">
+   			<value>classpath:jdbc.properties</value>
+  		</property>
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClass}"/>
+		<property name="jdbcUrl" value="${jdbc.url}"/>
+		<property name="user" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="maxPoolSize" value='${pool.c3p0.max_size}'/>
+		<property name="minPoolSize" value='${pool.c3p0.min_size}'/>
+		<property name="initialPoolSize" value='${pool.c3p0.init_size}'/>
+		<property name="maxIdleTime" value='${pool.c3p0.max_idel_time}'/>
+		<property name="acquireIncrement" value='${pool.c3p0.acquire_increment}'/>
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:persist/article</value>
+				<value>classpath:persist/user</value>
+				<value>classpath:persist/album</value>
+				<value>classpath:persist/leavemsg</value>
+				<value>classpath:persist/other</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" timeout="5"/>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="allServiceMethod" expression="execution(* com.dao..*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethod"/>
+	</aop:config>
+	
+	<context:annotation-config/>
+	<context:component-scan base-package="com"/>
+	
+	<bean id="Rss" class="com.rss.RssTimerTasks">
+		<property name="path" value='${path}'/>
+		<property name="top" value='${top}'/>
+	</bean>
+
+	<bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<!--程序启动后开始执行任务的延迟时间 -->
+		<property name="delay" value="0"/>
+		<!-- 每隔一小时【一小时＝60×1000微秒】执行一次-->
+		<property name="period" value="3600000"/>
+		<property name="timerTask" ref="Rss"/>
+	</bean>
+
+	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="scheduledTask"/>
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="persist.album">
+    <class name="Img" table="tb_img">
+        <id name="id" type="integer" access="field">
+            <column name="id" />
+            <generator class="increment"/>
+        </id>
+        
+        <many-to-one name="imgType" class="ImgType" fetch="select">
+            <column name="t_id" />
+        </many-to-one>
+        
+        <property name="imgname" type="string">
+            <column name="imgname" length="23" />
+        </property>
+        <property name="imgurl" type="string">
+            <column name="imgurl" length="20" />
+        </property>
+        <property name="imgdesc" type="string">
+            <column name="imgdesc" length="30" />
+        </property>
+        <property name="imginfo" type="string">
+            <column name="imginfo" length="20" />
+        </property>
+        <property name="imgtype" type="boolean">
+            <column name="imgtype">
+                <comment>判断图片是水平(1)还是坚直(0)</comment>
+            </column>
+        </property>
+        <property name="time" type="string">
+            <column name="time" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

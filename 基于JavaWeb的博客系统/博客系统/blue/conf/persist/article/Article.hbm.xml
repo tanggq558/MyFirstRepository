@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="persist.article">
+    <class name="Article" table="tb_article">
+        <id name="id" type="integer" access="field">
+            <column name="id" />
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="articleType" class="ArticleType" fetch="select">
+            <column name="t_id" not-null="true" />
+        </many-to-one>
+        <property name="title" type="string">
+            <column name="title" length="40" />
+        </property>
+        <property name="author" type="string">
+            <column name="author" length="20" />
+        </property>
+        <property name="content" type="string">
+            <column name="content"/>
+        </property>
+        <property name="scan" type="int">
+            <column name="scan" length="4" />
+        </property>
+        <property name="time" type="string">
+            <column name="time" length="19" />
+        </property>
+        <set name="articleComments" inverse="true" cascade="delete">
+            <key>
+                <column name="a_id" not-null="true" />
+            </key>
+            <one-to-many class="ArticleComment" />
+        </set>
+    </class>
+</hibernate-mapping>
